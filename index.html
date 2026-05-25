@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Batch Flow</title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+</head>
+<body>
+
+<!-- BACKGROUND -->
+
+<div class="sky-bg"></div>
+
+<!-- LOGIN -->
+
+<div
+  id="loginScreen"
+  class="login-screen"
+>
+
+  <div class="login-box">
+
+    <h1>Welcome To Batch Flow</h1>
+
+    <input
+      type="text"
+      id="username"
+      placeholder="Username"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
+
+    <select id="roleSelect">
+
+      <option value="Cashier">
+        Cashier
+      </option>
+
+      <option value="Admin">
+        Admin
+      </option>
+
+    </select>
+
+    <button onclick="login()">
+      Login
+    </button>
+
+  </div>
+
+</div>
+
+<!-- APP -->
+
+<div id="app" style="display:none;">
+
+<!-- HEADER -->
+
+<header>
+
+  <div class="logo-container">
+
+    <img
+      src="BatchFlow.jpg"
+      alt="Batch Flow Logo"
+      class="logo-img"
+    >
+
+    <div class="logo-text">
+      Batch Flow
+    </div>
+
+  </div>
+
+  <div class="topbar">
+
+    <span id="userInfo"></span>
+
+    <div class="sales-card">
+
+      Daily Sales:
+      ₱<span id="salesToday">0</span>
+
+    </div>
+
+    <button onclick="logout()">
+      Logout
+    </button>
+
+  </div>
+
+</header>
+
+  <!-- MAIN -->
+
+  <main>
+
+    <!-- PRODUCTS -->
+
+    <section class="panel">
+
+      <div class="cash-register-top">
+
+        <div>
+
+          <h2>🛍 Products</h2>
+
+          <input
+            type="text"
+            id="search"
+            placeholder="Search products..."
+          >
+
+        </div>
+
+        <div class="admin-actions">
+
+          <button onclick="openUserModal()">
+          👤 Manage Users
+          </button>
+
+          <button onclick="openAddModal()">
+            ➕ New Product
+          </button>
+
+          <button
+            class="danger-btn"
+            onclick="deleteSelectedProducts()"
+          >
+            🗑 Delete Selected
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        id="productList"
+        class="product-grid"
+      ></div>
+
+    </section>
+
+    <!-- CASH REGISTER -->
+
+    <section class="panel cart-panel">
+
+      <h2>🧾 Cash Register</h2>
+
+      <div id="cart"></div>
+
+      <!-- SUMMARY -->
+
+      <div class="summary">
+
+        <div class="summary-row">
+
+          <span>Subtotal</span>
+
+          <span>
+            ₱<span id="subtotal">0</span>
+          </span>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>Discount</span>
+
+          <div class="discount-controls">
+
+            <input
+              type="number"
+              id="discount"
+              value="0"
+            >
+
+            <button onclick="apply25Discount()">
+              25% OFF
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>Tax (12%)</span>
+
+          <span>
+            ₱<span id="tax">0</span>
+          </span>
+
+        </div>
+
+        <div class="summary-total">
+
+          TOTAL ₱<span id="total">0</span>
+
+        </div>
+
+      </div>
+
+      <!-- BUTTONS -->
+
+      <button
+        class="checkout-btn"
+        onclick="checkout()"
+      >
+        Checkout
+      </button>
+
+      <button
+        class="checkout-btn"
+        onclick="printReceipt()"
+      >
+        🖨 Print Receipt
+      </button>
+
+      <!-- HISTORY -->
+
+      <div class="history">
+
+        <h3>Recent Sales</h3>
+
+        <div id="history"></div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<!-- RECEIPT MODAL -->
+
+<div
+  id="modal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <h2>🧾 Receipt</h2>
+
+    <div id="receipt"></div>
+
+    <button onclick="closeModal()">
+      Close
+    </button>
+
+  </div>
+
+</div>
+
+<!-- MODERN PRODUCT MODAL -->
+
+<div
+  id="productModal"
+  class="modal"
+>
+
+  <div class="modern-modal">
+
+    <!-- TOP -->
+
+    <div class="modern-modal-header">
+
+      <div>
+
+        <h2>✨ Add New Product</h2>
+
+        <p>
+          Create inventory items instantly
+        </p>
+
+      </div>
+
+      <button
+        class="close-modern"
+        onclick="closeProductModal()"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="modern-form">
+
+      <!-- PRODUCT NAME -->
+
+      <div class="input-group">
+
+        <label>
+          Product Name
+        </label>
+
+        <input
+          type="text"
+          id="pname"
+          placeholder="Enter product name"
+        >
+
+      </div>
+
+      <!-- PRICE -->
+
+      <div class="input-group">
+
+        <label>
+          Price
+        </label>
+
+        <div class="input-icon">
+
+          <span>₱</span>
+
+          <input
+            type="number"
+            id="pprice"
+            placeholder="0.00"
+          >
+
+        </div>
+
+      </div>
+
+      <!-- STOCK -->
+
+      <div class="input-group">
+
+        <label>
+          Stock Quantity
+        </label>
+
+        <input
+          type="number"
+          id="pstock"
+          placeholder="0"
+        >
+
+      </div>
+
+      <!-- DELIVERY DATE -->
+
+<div class="input-group">
+
+  <label>
+    Delivery Date
+  </label>
+
+  <input
+    type="date"
+    id="pdeliverydate"
+  >
+
+</div>
+
+<!-- DELIVERY RECEIPT -->
+
+<div class="input-group">
+
+  <label>
+    Delivery Receipt #
+  </label>
+
+  <input
+    type="text"
+    id="pdeliveryreceipt"
+    placeholder="DR Number"
+  >
+
+</div>
+
+<!-- EXPIRY DATE -->
+
+<div class="input-group">
+
+  <label>
+    Expiry Date
+  </label>
+
+  <input
+    type="date"
+    id="pexpirydate"
+  >
+
+</div>
+
+      <!-- BUTTONS -->
+
+      <div class="modern-actions">
+
+        <button
+          class="save-btn"
+          onclick="addProduct()"
+        >
+          ➕ Add Product
+        </button>
+
+        <button
+          class="cancel-btn"
+          onclick="closeProductModal()"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- USER MODAL -->
+
+<div
+  id="userModal"
+  class="modal"
+>
+
+  <div class="modern-modal">
+
+    <div class="modern-modal-header">
+
+      <div>
+
+        <h2>👤 Manage Users</h2>
+
+        <p>
+          Add or delete users
+        </p>
+
+      </div>
+
+      <button
+        class="close-modern"
+        onclick="closeUserModal()"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <div class="modern-form">
+
+      <!-- USERNAME -->
+
+      <div class="input-group">
+
+        <label>
+          Username
+        </label>
+
+        <input
+          type="text"
+          id="newUsername"
+          placeholder="Enter username"
+        >
+
+      </div>
+
+      <!-- PASSWORD -->
+
+      <div class="input-group">
+
+        <label>
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Enter password"
+        >
+
+      </div>
+
+      <!-- ROLE -->
+
+      <div class="input-group">
+
+        <label>
+          Role
+        </label>
+
+        <select id="newRole">
+
+          <option value="Cashier">
+            Cashier
+          </option>
+
+          <option value="Admin">
+            Admin
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- ACTIONS -->
+
+      <div class="modern-actions">
+
+        <button
+          class="save-btn"
+          onclick="addUser()"
+        >
+          ➕ Add User
+        </button>
+
+      </div>
+
+      <!-- USER LIST -->
+
+      <div id="userList"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
