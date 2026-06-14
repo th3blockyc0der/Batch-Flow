@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batch Flow POS</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <script>
+    // Fixed to match the key saved by script.js
+    const currentUserCheck = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!currentUserCheck) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <header class="top-bar">
+    <div class="top-left">
+      <div class="brand">
+        <img src="BatchFlow.jpg" alt="Batch Flow" class="huge-brand-logo">
+      </div>
+    </div>
+
+    <div class="top-right">
+      <div class="user-profile">
+        <div class="avatar" id="topUserAvatar">-</div>
+        <div class="user-info">
+          <span class="username" id="topUsername">Loading...</span>
+          <span class="role" id="topUserRole">...</span>
+        </div>
+      </div>
+      <button class="nav-btn" id="managementBtn" onclick="window.location.href='management.html'">⚙ Management</button>
+      <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <main class="pos-container">
+    
+    <section class="products-section">
+      <div class="section-header">
+        <h2>🛒 Item Registry</h2>
+      </div>
+      <div class="products-grid" id="productList">
+        </div>
+    </section>
+
+    <aside class="cart-section">
+      <div class="cart-header">
+        <h2>🛍 Active Basket</h2>
+      </div>
+
+      <div class="cart-items" id="cartItems">
+        </div>
+
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>₱<span id="subtotal">0.00</span></span>
+        </div>
+
+        <div class="summary-row">
+          <label for="discount">Discount (%)</label>
+          <div class="discount-controls">
+            <input type="number" id="discount" value="0" min="0" max="100">
+            <button onclick="apply25Discount()">25% OFF</button>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <span>Tax (12%)</span>
+          <span>₱<span id="tax">0.00</span></span>
+        </div>
+
+        <div class="summary-total">
+          TOTAL ₱<span id="total">0.00</span>
+        </div>
+      </div>
+
+      <button class="checkout-btn" onclick="checkout()">Checkout</button>
+      <button class="checkout-btn" style="background: var(--bg-light);" onclick="printReceipt()">🖨 Print Receipt</button>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

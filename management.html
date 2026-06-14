@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batch Flow Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="top-bar">
+    <h1>⚙ Batch Flow Management</h1>
+    <div class="nav-buttons">
+      <button onclick="window.location.href='index.html'">🛒 POS</button>
+      <button onclick="logout()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <section class="dashboard-grid">
+    <div class="dash-card">
+      <h3>📦 Active Products</h3>
+      <p class="dash-num" id="totalProducts">0</p>
+    </div>
+    <div class="dash-card">
+      <h3>📈 Cumulative Expenses</h3>
+      <p class="dash-num" id="totalExpenses">₱0.00</p>
+    </div>
+    <div class="dash-card">
+      <h3>🤝 Active Suppliers</h3>
+      <p class="dash-num" id="totalSuppliers">0</p>
+    </div>
+    <div class="dash-card">
+      <h3>📁 Categories Set</h3>
+      <p class="dash-num" id="totalCategories">0</p>
+    </div>
+  </section>
+
+  <section class="management-actions">
+    <button onclick="openAddModal()">➕ Add Product</button>
+    <button onclick="openSupplierModal()">🤝 Add Supplier</button> <button onclick="openUserModal()">👤 Manage Users</button>
+  </section>
+
+  <div id="supplierModal" class="modal">
+    <div class="modal-content" style="max-width: 700px; width: 90%;">
+      <span class="close" onclick="closeSupplierModal()">&times;</span>
+      <h2>🤝 Register New Supplier Entity</h2>
+      
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+        <div class="input-group" style="flex: 1; min-width: 280px; margin-bottom: 0;">
+          <label>Company Name *</label>
+          <input type="text" id="scompany" placeholder="e.g., Flour Distributors Inc." required>
+        </div>
+        
+        <div class="input-group" style="flex: 1; min-width: 280px; margin-bottom: 0;">
+          <label>Contact Person Name</label>
+          <input type="text" id="scontact" placeholder="e.g., John Doe">
+        </div>
+
+        <div class="input-group" style="flex: 1; min-width: 280px; margin-bottom: 0;">
+          <label>Contact Number</label>
+          <input type="text" id="sphone" placeholder="e.g., 09123456789">
+        </div>
+
+        <div class="input-group" style="flex: 1; min-width: 280px; margin-bottom: 0;">
+          <label>Email Address</label>
+          <input type="email" id="semail" placeholder="e.g., supply@company.com">
+        </div>
+      </div>
+
+      <button class="save-btn" onclick="addSupplier()" style="margin-top: 30px; width: 100%; padding: 12px;">Save Supplier Profile</button>
+    </div>
+  </div>
+
+  
+
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeUserModal()">&times;</span>
+      <h2>👤 Active Operators System Management</h2>
+      
+      <div style="margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+        <h3>➕ Provision New Operator Account</h3>
+        <div class="form-grid" style="margin-top: 12px;">
+          <div class="input-group"><label>System Username</label><input type="text" id="newUsername"></div>
+          <div class="input-group"><label>Access Secret Password</label><input type="password" id="newPassword"></div>
+          <div class="input-group">
+            <label>Permission Security Group Role</label>
+            <select id="newRole">
+              <option value="Admin">Admin</option>
+              <option value="Manager">Manager</option>
+              <option value="Cashier">Cashier</option>
+            </select>
+          </div>
+        </div>
+        <button class="save-btn" onclick="addUser()" style="margin-top: 15px;">➕ Create Operator Account</button>
+      </div>
+
+      <h3>👥 Currently Authorized Accounts Registry</h3>
+      <div id="userList" class="user-list" style="margin-top: 12px; max-height: 250px; overflow-y: auto;">
+        </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

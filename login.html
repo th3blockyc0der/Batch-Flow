@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batch Flow Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-body">
+
+  <div class="login-container">
+    <div class="login-card">
+      
+      <div class="login-logo">
+        <img src="BatchFlow.jpg" alt="Batch Flow Logo" class="login-brand-logo">
+        <p>Bake Better, Manage Easier</p>
+      </div>
+
+      <div class="login-form">
+        
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter username" required>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter password" required>
+        </div>
+
+        <div class="input-group">
+          <label for="role">Authorized Security Group Role</label>
+          <select id="role">
+            <option value="Cashier">Cashier Operator</option>
+            <option value="Manager">Manager</option>
+            <option value="Admin">System Administrator</option>
+          </select>
+        </div>
+
+        <button class="login-btn" onclick="login()">Sign In</button>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const activeSession = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (activeSession) {
+        // Automatically bypass login if a valid session token exists
+        if (activeSession.role === "Admin" || activeSession.role === "Manager") {
+          window.location.href = "management.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
